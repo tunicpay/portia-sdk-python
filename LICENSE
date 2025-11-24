@@ -1,3 +1,17 @@
+⚠️ **License Transition Notice**
+
+The Portia SDK is currently released under the MIT License.  
+This open-source license will remain in effect **until 30 November 2025**.
+
+Starting **1 December 2025**, this repository will transition to a **closed-source, proprietary license**.  
+Future versions published after this date will not be available under the MIT License.
+
+Users may continue to use versions released on or before 30 November 2025 under the original MIT terms.
+
+For commercial licensing enquiries after 1 December 2025, please contact: hello@portialabs.ai
+
+--
+
 MIT License
 
 Copyright (c) 2025 Portia AI
@@ -19,3 +33,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
