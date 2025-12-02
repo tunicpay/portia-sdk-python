@@ -8,18 +8,6 @@
 
 # Portia SDK Python
 
-> **⚠️ Important Notice: Repository Deprecation and Transition to Closed Source**
-> 
-> A commonly known secret in the open source industry is that most companies have an uncomfortable relationship with their open source product at some point in their lifetime. As the Portia product has evolved, it has become increasingly clear that the product that we've built works best for real scaled production deployments. For this reason, we've made the difficult decision to no longer be open source.
-> 
-> To our open source users, firstly, thank you for your contributions and investment in making Portia what it is today. We have yanked all versions on pip but not deleted them – our cut off date for doing so will be the end of November. Likewise, the repository will change to private at the end of November and future evolutions of Portia will be closed source.
-> 
-> If you are using the cloud based product, please get in touch at hello@portialabs.ai to discuss your specific usecase.
-> 
-> Thank you again,
-> 
-> The Portia Team
-
 ## Key features
 
 **Iterate on agents’ reasoning and intervene in their execution**</br>
