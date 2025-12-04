@@ -37,7 +37,7 @@ dependencies = [
     "testcontainers[redis]>=4.10.0 ; python_version >= '3.9' and python_version < '4.0'",
     "instructor>=1.9.0 ; python_version >= '3.9' and python_version < '4.0'",
     "litellm>=1.74.9.post1",
-    "openai<1.99",
+    "openai<2.0.0",
     "langchain-google-genai>=2.1.8,<3 ; python_version >= '3.11' and python_version < '4.0'",
     "google-genai>=1.18.0",
     "pydash>=8.0.0,<9",
