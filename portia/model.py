@@ -15,7 +15,7 @@ import instructor
 import litellm
 from anthropic import Anthropic, AsyncAnthropic
 from google import genai
-from langchain.globals import set_llm_cache
+from langchain_core.globals import set_llm_cache
 from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage
 from langchain_core.outputs import Generation

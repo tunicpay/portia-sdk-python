@@ -7,7 +7,7 @@ import mimetypes
 from pathlib import Path
 from typing import Any, Self
 
-from langchain.schema import HumanMessage
+from langchain_core.messages import HumanMessage
 from pydantic import BaseModel, Field, model_validator
 
 from portia.errors import ToolHardError

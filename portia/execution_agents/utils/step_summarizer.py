@@ -7,8 +7,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from langchain.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
-from langchain.schema import SystemMessage
+from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
+from langchain_core.messages import SystemMessage
 from langchain_core.messages import AIMessage, AnyMessage, ToolMessage
 from langgraph.graph import MessagesState  # noqa: TC002
 from pydantic import BaseModel

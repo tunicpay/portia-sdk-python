@@ -3,85 +3,81 @@ name = "portia-sdk-python"
 version = "0.9.0"
 description = "Portia Labs Python SDK for building agentic workflows."
 authors = [{ name = "Hello", email = "hello@portialabs.ai" }]
-requires-python = ">=3.11"
+requires-python = ">=3.11,<4.0"
 readme = "README.md"
 license = { file = "LICENSE" }
-keywords = [
-    "LLM",
-    "agentic",
-    "workflow",
-]
+keywords = ["LLM", "agentic", "workflow"]
 classifiers = ["Development Status :: 3 - Alpha"]
 dependencies = [
-    "pydantic>=2.11.5,<3",
-    "jinja2>=3.1.4,<4",
-    "instructor>=1.9.0,<2 ; python_version >= '3.11' and python_version < '4.0'",
-    "anthropic>=0.41.0,<=0.55.0",
-    # We fixate langchain-anthropic to this version because of browser-use version conflicts.
-    # Once we upgrade browser-use, we should upgrade this dependency to latest.
-    "langchain-anthropic==0.3.3 ; python_version >= '3.11' and python_version < '4.0'", #
-    "langchain-core>=0.3.25,<0.4 ; python_version >= '3.11' and python_version < '4.0'",
-    "langchain-openai>=0.3,<0.4 ; python_version >= '3.11' and python_version < '4.0'",
-    "langchain>=0.3.17,<0.4 ; python_version >= '3.11' and python_version < '4.0'",
-    "langgraph>=0.2.59,<0.3 ; python_version >= '3.11' and python_version < '4.0'",
-    "click>=8.1.7,<9",
-    "loguru>=0.7.3,<0.8 ; python_version >= '3.11' and python_version < '4.0'",
-    "python-dotenv>=1.0.1,<2",
-    "pandas>=2.2.3,<3",
-    "pytest-mock>=3.14.0,<4",
-    "openpyxl>=3.1.5,<4",
-    "mcp>=1.9.2,<2",
-    "langsmith>=0.3.15,<0.4 ; python_version >= '3.11' and python_version < '4.0'",
-    "jsonref>=1.1.0,<2",
+    "pydantic>=2.11.5",
+    "jinja2>=3.1.4",
+    "instructor>=1.9.0 ; python_version >= '3.11' and python_version < '4.0'",
+    "anthropic>=0.41.0",
+    "langchain-anthropic>=1.0.0 ; python_version >= '3.11' and python_version < '4.0'",
+    "langchain-core>=1.0.0 ; python_version >= '3.11' and python_version < '4.0'",
+    "langchain-openai>=0.3 ; python_version >= '3.11' and python_version < '4.0'",
+    "langchain>=0.3.17 ; python_version >= '3.11' and python_version < '4.0'",
+    "langgraph>=1.0.4 ; python_version >= '3.11' and python_version < '4.0'",
+    "langgraph-checkpoint>=3.0.0 ; python_version >= '3.11' and python_version < '4.0'",
+    "click>=8.1.7",
+    "loguru>=0.7.3 ; python_version >= '3.11' and python_version < '4.0'",
+    "python-dotenv>=1.0.1",
+    "pandas>=2.2.3",
+    "pytest-mock>=3.14.0",
+    "openpyxl>=3.1.5",
+    "mcp>=1.9.2",
+    "langsmith>=0.3.15 ; python_version >= '3.11' and python_version < '4.0'",
+    "jsonref>=1.1.0",
     "posthog~=6.0",
     "testcontainers[redis]>=4.10.0 ; python_version >= '3.9' and python_version < '4.0'",
-    "instructor>=1.9.0 ; python_version >= '3.9' and python_version < '4.0'",
     "litellm>=1.74.9.post1",
-    "openai<2.0.0",
-    "langchain-google-genai>=2.1.8,<3 ; python_version >= '3.11' and python_version < '4.0'",
+    "openai>=1.0.0",
+    "langchain-google-genai>=2.1.8 ; python_version >= '3.11' and python_version < '4.0'",
     "google-genai>=1.18.0",
-    "pydash>=8.0.0,<9",
-    "toml>=0.10.2,<1",
+    "pydash>=8.0.0",
+    "toml>=0.10.2",
 ]
 
 [project.optional-dependencies]
 mistral = [
-    "langchain-mistralai>=0.2.3,<0.3 ; python_version >= '3.11' and python_version < '4.0'",
-    "mistralai>=1.2.5,<2",
+    "langchain-mistralai>=0.2.3 ; python_version >= '3.11' and python_version < '4.0'",
+    "mistralai>=1.2.5",
 ]
 mistralai = [
-    "langchain-mistralai>=0.2.3,<0.3 ; python_version >= '3.11' and python_version < '4.0'",
-    "mistralai>=1.2.5,<2",
+    "langchain-mistralai>=0.2.3 ; python_version >= '3.11' and python_version < '4.0'",
+    "mistralai>=1.2.5",
 ]
 amazon = [
     "langchain-aws>=0.2.28 ; python_version >= '3.11' and python_version < '4.0'",
-    "boto3>=1.39.9"
+    "boto3>=1.39.9",
 ]
-ollama = ["langchain-ollama>=0.2.2,<0.3 ; python_version >= '3.11' and python_version < '4.0'"]
-groq = ["groq>=0.12.0,<1.0"]
+ollama = [
+    "langchain-ollama>=0.2.2 ; python_version >= '3.11' and python_version < '4.0'",
+]
+groq = ["groq>=0.12.0"]
 tools-browser-local = [
-    "playwright>=1.49.0,<2",
-    "browser-use==0.1.40 ; python_version >= '3.11' and python_version < '4.0'",
+    "playwright>=1.49.0",
+    "browser-use>=0.1.40 ; python_version >= '3.11' and python_version < '4.0'",
 ]
 tools-browser-browserbase = [
-    "playwright>=1.49.0,<2",
-    "browser-use==0.1.40 ; python_version >= '3.11' and python_version < '4.0'",
-    "browserbase>=1.2.0,<2",
+    "playwright>=1.49.0",
+    "browser-use>=0.1.40 ; python_version >= '3.11' and python_version < '4.0'",
+    "browserbase>=1.2.0",
 ]
-tools-pdf-reader = ["mistralai>=1.2.5,<2"]
-cache = ["redis>=5.2.1,<6", "langchain-redis>=0.1.2" ]
+tools-pdf-reader = ["mistralai>=1.2.5"]
+cache = [
+    "redis>=5.2.1",
+    "langchain-redis>=0.1.2 ; python_version >= '3.11' and python_version < '3.13'",
+]
 all = [
-    "langchain-mistralai>=0.2.3,<0.3 ; python_version >= '3.11' and python_version < '4.0'",
-    "mistralai>=1.2.5,<2",
-    "langchain-ollama>=0.2.2,<0.3 ; python_version >= '3.11' and python_version < '4.0'",
-    "groq>=0.12.0,<1.0",
-    "playwright>=1.49.0,<2",
-    "browser-use==0.1.40 ; python_version >= '3.11' and python_version < '4.0'",
-    "browserbase>=1.2.0,<2",
-    "redis>=5.2.1,<6",
-    "langchain-redis>=0.1.2 ; python_version >= '3.11' and python_version < '3.14'",
+    "langchain-mistralai>=0.2.3 ; python_version >= '3.11' and python_version < '4.0'",
+    "mistralai>=1.2.5",
+    "langchain-ollama>=0.2.2 ; python_version >= '3.11' and python_version < '4.0'",
+    "groq>=0.12.0",
+    "redis>=5.2.1",
+    "langchain-redis>=0.1.2 ; python_version >= '3.11' and python_version < '3.13'",
     "langchain-aws>=0.2.28 ; python_version >= '3.11' and python_version < '4.0'",
-    "boto3>=1.39.9 ; python_version >= '3.9' and python_version < '4.0'"
+    "boto3>=1.39.9 ; python_version >= '3.9' and python_version < '4.0'",
 ]
 
 [project.urls]
@@ -94,13 +90,13 @@ portia-cli = "portia.cli:cli"
 
 [dependency-groups]
 dev = [
-    "pre-commit>=4.2.0,<5",
-    "ruff>=0.8.0,<0.9",
+    "pre-commit>=4.2.0",
+    "ruff>=0.8.0",
     "pytest>=8.3.3",
-    "pytest-rerunfailures~=14.0",
-    "pytest-cov>=5.0.0,<6",
-    "pyright>=1.1.382,<2",
-    "pytest-xdist[psutil]>=3.6.1,<4",
+    "pytest-rerunfailures>=14.0",
+    "pytest-cov>=5.0.0",
+    "pyright>=1.1.382",
+    "pytest-xdist[psutil]>=3.6.1",
     "pytest-asyncio>=1.1.0",
     "pytest-httpx>=0.35.0",
     "pydash>=8.0.5",
@@ -123,37 +119,37 @@ build-backend = "hatchling.build"
 ignore = ["scratch/*"]
 
 [tool.ruff]
-line-length=100
+line-length = 100
 
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-  "COM812",  # Disables checks for trailing commas as they are fixed by the formatted and running both is not recommended.
-  "D203",    # Disables checks for having a blank line before a class docstring. We instead have no-blank-line-before-class (D211) enabled.
-  "D213",    # Disables checks for multi-line docstrings not starting on the first line. We instead have multi-line-summary-first-line (D212) enabled.
-  "EM101",   # Disables checks for missing exception message arguments. We prefer single-line exception statements for simplicity and terseness.
-  "EM102",   # Disables checks for f-string usage in exception messages. We prefer single-line exception statements with f-strings for simplicity and terseness.
-  "TRY003",  # Disables checks for long error messages. We prefer to provide as much context to users as possible but want to avoid a proliferation of error classes.
-  "FBT001",  # Disables checks for unused type parameters. We prefer booleans for simple parameters rather than unnecessary enums.
-  "FBT002",  # Disables checks for unused type parameters. We prefer booleans for simple parameters rather than unnecessary enums.
+    "COM812", # Disables checks for trailing commas as they are fixed by the formatted and running both is not recommended.
+    "D203",   # Disables checks for having a blank line before a class docstring. We instead have no-blank-line-before-class (D211) enabled.
+    "D213",   # Disables checks for multi-line docstrings not starting on the first line. We instead have multi-line-summary-first-line (D212) enabled.
+    "EM101",  # Disables checks for missing exception message arguments. We prefer single-line exception statements for simplicity and terseness.
+    "EM102",  # Disables checks for f-string usage in exception messages. We prefer single-line exception statements with f-strings for simplicity and terseness.
+    "TRY003", # Disables checks for long error messages. We prefer to provide as much context to users as possible but want to avoid a proliferation of error classes.
+    "FBT001", # Disables checks for unused type parameters. We prefer booleans for simple parameters rather than unnecessary enums.
+    "FBT002", # Disables checks for unused type parameters. We prefer booleans for simple parameters rather than unnecessary enums.
 ]
 
 [tool.ruff.lint.per-file-ignores]
 "**/tests/*" = [
-  "S101",    # Disables check for asserts. Asserts in test cases can be useful.
-  "PLR2004", # Disables magic number checks. Its normal to assert using magic numbers for things like array length.
-  "INP001",  # Disables checks for implicit namespace packages. Tests are not part of the package.
-  "SLF001",  # Disables checks for private member access. We call private methods in tests.
-  "C901",    # Disables checks for too many lines in function. Tests are allowed to be longer.
+    "S101",    # Disables check for asserts. Asserts in test cases can be useful.
+    "PLR2004", # Disables magic number checks. Its normal to assert using magic numbers for things like array length.
+    "INP001",  # Disables checks for implicit namespace packages. Tests are not part of the package.
+    "SLF001",  # Disables checks for private member access. We call private methods in tests.
+    "C901",    # Disables checks for too many lines in function. Tests are allowed to be longer.
 ]
 
 [tool.ruff.lint.flake8-type-checking]
 runtime-evaluated-base-classes = [
-  "pydantic.BaseModel", # Tells ruff that BaseModel instances need to be evaluated at runtime.
+    "pydantic.BaseModel", # Tells ruff that BaseModel instances need to be evaluated at runtime.
 ]
 
 [tool.ruff.lint.flake8-annotations]
-allow-star-arg-any = true  # Allows **kwargs: Any in type signatures.
+allow-star-arg-any = true # Allows **kwargs: Any in type signatures.
 
 [tool.ruff.lint.pylint]
 max-args = 10
@@ -163,14 +159,14 @@ portia = ["templates/**/*.jinja"]
 
 [tool.pytest.ini_options]
 filterwarnings = [
-    "ignore:Failing to pass a value to the 'type_params' parameter of 'typing.ForwardRef._evaluate':DeprecationWarning",  # this comes from LangChain
-    "ignore::DeprecationWarning:langchain_core.load.serializable",  # Pydantic via LangChain
+    "ignore:Failing to pass a value to the 'type_params' parameter of 'typing.ForwardRef._evaluate':DeprecationWarning", # this comes from LangChain
+    "ignore::DeprecationWarning:langchain_core.load.serializable",                                                       # Pydantic via LangChain
 ]
 addopts = [
-  "--cov",
-  "--cov-report=term-missing",
-  "--cov-report=html",
-  "--import-mode=importlib"
+    "--cov",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--import-mode=importlib",
 ]
 asyncio_mode = "auto"
 markers = [
@@ -179,17 +175,14 @@ markers = [
 
 [tool.coverage.run]
 omit = [
-    "*/tests/*", # Don't cover test files themselves
-    "example.py", # Don't cover example
-    "*/_unstable/**",  # Don't check _unstable files
+    "*/tests/*",      # Don't cover test files themselves
+    "example.py",     # Don't cover example
+    "*/_unstable/**", # Don't check _unstable files
     "portia/cli.py",  # Best effort test coverage
 ]
 
 [tool.coverage.report]
-exclude_lines = [
-    "if TYPE_CHECKING:",
-    "pragma: no cover",
-]
+exclude_lines = ["if TYPE_CHECKING:", "pragma: no cover"]
 
 [[tool.pydoc-markdown.loaders]]
 type = "python"
@@ -207,11 +200,11 @@ type = "crossref"
 
 [tool.pydoc-markdown.renderer]
 type = "docusaurus"
-relative_output_path="SDK"
-sidebar_top_level_label=""
+relative_output_path = "SDK"
+sidebar_top_level_label = ""
 
 [tool.licensecheck]
 using = "uv"
 ignore_packages = [
-  "mistralai", # MistralAI is Apache 2.0 licensed: https://github.com/mistralai/client-python?tab=Apache-2.0-1-ov-file
-] 
+    "mistralai", # MistralAI is Apache 2.0 licensed: https://github.com/mistralai/client-python?tab=Apache-2.0-1-ov-file
+]
