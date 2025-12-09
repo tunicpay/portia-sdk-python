@@ -86,7 +86,8 @@ def mock_storage() -> MockStorage:
 def test_tool_call_wrapper_initialization(mock_tool: Tool, mock_storage: MockStorage) -> None:
     """Test initialization of the ToolCallWrapper."""
     (_, plan_run) = get_test_plan_run()
-    wrapper = ToolCallWrapper(child_tool=mock_tool, storage=mock_storage, plan_run=plan_run)
+    wrapper = ToolCallWrapper(child_tool=mock_tool,
+                              storage=mock_storage, plan_run=plan_run)
     assert wrapper.name == mock_tool.name
     assert wrapper.description == mock_tool.description
 
@@ -144,7 +145,8 @@ def test_tool_call_wrapper_run_returns_none(mock_storage: MockStorage) -> None:
     ctx = get_test_tool_context()
     wrapper.run(ctx)
     assert mock_storage.records[-1].output
-    assert mock_storage.records[-1].output == LocalDataValue(value=None).model_dump(mode="json")
+    assert mock_storage.records[-1].output == LocalDataValue(
+        value=None).model_dump(mode="json")
 
 
 # Async tests for ToolCallWrapper.arun method
@@ -270,7 +272,8 @@ def test_portia_get_tool_for_step_none_tool_id() -> None:
     """Test that when step.tool_id is None, LLMTool is used as fallback."""
     _, plan_run = get_test_plan_run()
     tool = ToolCallWrapper.from_tool_id(
-        None, DefaultToolRegistry(get_test_config()), InMemoryStorage(), plan_run
+        None, DefaultToolRegistry(
+            get_test_config()), InMemoryStorage(), plan_run
     )
     assert tool is None
 
@@ -279,7 +282,8 @@ def test_get_llm_tool_not_in_registry() -> None:
     """Test special case retrieval of LLMTool as it isn't explicitly in most tool registries."""
     _, plan_run = get_test_plan_run()
     tool = ToolCallWrapper.from_tool_id(
-        LLMTool.LLM_TOOL_ID, InMemoryToolRegistry.from_local_tools([]), InMemoryStorage(), plan_run
+        LLMTool.LLM_TOOL_ID, InMemoryToolRegistry.from_local_tools(
+            []), InMemoryStorage(), plan_run
     )
     assert tool is not None
     assert isinstance(tool._child_tool, LLMTool)

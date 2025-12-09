@@ -6,8 +6,8 @@ and makes decisions about whether execution should continue.
 
 from datetime import UTC, datetime
 
-from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_core.messages import SystemMessage
+from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 
 from portia.config import Config
 from portia.introspection_agents.introspection_agent import (

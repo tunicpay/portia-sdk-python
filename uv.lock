@@ -1,6 +1,6 @@
 version = 1
 revision = 3
-requires-python = ">=3.11"
+requires-python = ">=3.11, <4.0"
 resolution-markers = [
     "python_full_version >= '3.13'",
     "python_full_version == '3.12.*'",
@@ -2757,19 +2757,19 @@ dependencies = [
     { name = "anthropic" },
     { name = "click" },
     { name = "google-genai" },
-    { name = "instructor", marker = "python_full_version < '4'" },
+    { name = "instructor" },
     { name = "jinja2" },
     { name = "jsonref" },
-    { name = "langchain", marker = "python_full_version < '4'" },
-    { name = "langchain-anthropic", marker = "python_full_version < '4'" },
-    { name = "langchain-core", marker = "python_full_version < '4'" },
-    { name = "langchain-google-genai", marker = "python_full_version < '4'" },
-    { name = "langchain-openai", marker = "python_full_version < '4'" },
-    { name = "langgraph", marker = "python_full_version < '4'" },
-    { name = "langgraph-checkpoint", marker = "python_full_version < '4'" },
-    { name = "langsmith", marker = "python_full_version < '4'" },
+    { name = "langchain" },
+    { name = "langchain-anthropic" },
+    { name = "langchain-core" },
+    { name = "langchain-google-genai" },
+    { name = "langchain-openai" },
+    { name = "langgraph" },
+    { name = "langgraph-checkpoint" },
+    { name = "langsmith" },
     { name = "litellm" },
-    { name = "loguru", marker = "python_full_version < '4'" },
+    { name = "loguru" },
     { name = "mcp" },
     { name = "openai" },
     { name = "openpyxl" },
@@ -2779,50 +2779,50 @@ dependencies = [
     { name = "pydash" },
     { name = "pytest-mock" },
     { name = "python-dotenv" },
-    { name = "testcontainers", extra = ["redis"], marker = "python_full_version < '4'" },
+    { name = "testcontainers", extra = ["redis"] },
     { name = "toml" },
 ]
 
 [package.optional-dependencies]
 all = [
-    { name = "boto3", marker = "python_full_version < '4'" },
+    { name = "boto3" },
     { name = "groq" },
-    { name = "langchain-aws", marker = "python_full_version < '4'" },
-    { name = "langchain-mistralai", marker = "python_full_version < '4'" },
-    { name = "langchain-ollama", marker = "python_full_version < '4'" },
-    { name = "langchain-redis", marker = "python_full_version < '3.14'" },
+    { name = "langchain-aws" },
+    { name = "langchain-mistralai" },
+    { name = "langchain-ollama" },
+    { name = "langchain-redis", marker = "python_full_version < '3.13'" },
     { name = "mistralai" },
     { name = "redis" },
 ]
 amazon = [
     { name = "boto3" },
-    { name = "langchain-aws", marker = "python_full_version < '4'" },
+    { name = "langchain-aws" },
 ]
 cache = [
-    { name = "langchain-redis" },
+    { name = "langchain-redis", marker = "python_full_version < '3.13'" },
     { name = "redis" },
 ]
 groq = [
     { name = "groq" },
 ]
 mistral = [
-    { name = "langchain-mistralai", marker = "python_full_version < '4'" },
+    { name = "langchain-mistralai" },
     { name = "mistralai" },
 ]
 mistralai = [
-    { name = "langchain-mistralai", marker = "python_full_version < '4'" },
+    { name = "langchain-mistralai" },
     { name = "mistralai" },
 ]
 ollama = [
-    { name = "langchain-ollama", marker = "python_full_version < '4'" },
+    { name = "langchain-ollama" },
 ]
 tools-browser-browserbase = [
-    { name = "browser-use", marker = "python_full_version < '4'" },
+    { name = "browser-use" },
     { name = "browserbase" },
     { name = "playwright" },
 ]
 tools-browser-local = [
-    { name = "browser-use", marker = "python_full_version < '4'" },
+    { name = "browser-use" },
     { name = "playwright" },
 ]
 tools-pdf-reader = [
@@ -2873,8 +2873,8 @@ requires-dist = [
     { name = "langchain-ollama", marker = "python_full_version >= '3.11' and python_full_version < '4' and extra == 'all'", specifier = ">=0.2.2" },
     { name = "langchain-ollama", marker = "python_full_version >= '3.11' and python_full_version < '4' and extra == 'ollama'", specifier = ">=0.2.2" },
     { name = "langchain-openai", marker = "python_full_version >= '3.11' and python_full_version < '4'", specifier = ">=0.3" },
-    { name = "langchain-redis", marker = "python_full_version >= '3.11' and python_full_version < '3.14' and extra == 'all'", specifier = ">=0.1.2" },
-    { name = "langchain-redis", marker = "extra == 'cache'", specifier = ">=0.1.2" },
+    { name = "langchain-redis", marker = "python_full_version >= '3.11' and python_full_version < '3.13' and extra == 'all'", specifier = ">=0.1.2" },
+    { name = "langchain-redis", marker = "python_full_version >= '3.11' and python_full_version < '3.13' and extra == 'cache'", specifier = ">=0.1.2" },
     { name = "langgraph", marker = "python_full_version >= '3.11' and python_full_version < '4'", specifier = ">=1.0.4" },
     { name = "langgraph-checkpoint", marker = "python_full_version >= '3.11' and python_full_version < '4'", specifier = ">=3.0.0" },
     { name = "langsmith", marker = "python_full_version >= '3.11' and python_full_version < '4'", specifier = ">=0.3.15" },
