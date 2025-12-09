@@ -6,6 +6,9 @@ from typing import TYPE_CHECKING, Any, ClassVar
 
 import pytest
 
+pytest.importorskip("browser_use")  # Skip all tests if browser-use not installed
+
+
 from portia import LLMProvider, PlanBuilder, PlanRunState, Portia, ToolRegistry, ToolRunContext
 from portia.config import (
     Config,

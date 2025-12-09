@@ -6,6 +6,9 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
+pytest.importorskip("mistralai")  # Skip all tests if mistralai not installed
+
+
 from portia.open_source_tools.pdf_reader_tool import PDFReaderTool
 from tests.utils import get_test_tool_context
 

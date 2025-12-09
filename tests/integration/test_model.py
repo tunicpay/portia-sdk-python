@@ -6,8 +6,11 @@ import os
 from typing import TYPE_CHECKING, Any
 from unittest import mock
 
-import ollama
 import pytest
+
+pytest.importorskip("ollama")  # Skip all tests if ollama not installed
+
+import ollama
 from langchain_openai import ChatOpenAI
 from openai import OpenAI
 from pydantic import BaseModel
