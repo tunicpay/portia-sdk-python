@@ -3,7 +3,7 @@
 from unittest.mock import MagicMock
 
 import pytest
-from langchain.schema import HumanMessage
+from langchain_core.messages import HumanMessage
 from pydantic import ValidationError
 
 from portia.open_source_tools.image_understanding_tool import (

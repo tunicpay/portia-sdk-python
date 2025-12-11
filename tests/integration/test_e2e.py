@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, cast
 from unittest.mock import MagicMock, patch
 
 import pytest
-from langchain.globals import set_llm_cache
+from langchain_core.globals import set_llm_cache
 from pydantic import BaseModel, Field, HttpUrl
 from testcontainers.redis import RedisContainer
 

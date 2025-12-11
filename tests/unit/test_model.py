@@ -14,7 +14,6 @@ from langchain_core.outputs import Generation
 from pydantic import BaseModel, SecretStr, ValidationError
 
 from portia.model import (
-    AmazonBedrockGenerativeModel,
     AnthropicGenerativeModel,
     AzureOpenAIGenerativeModel,
     GenerativeModel,
@@ -25,6 +24,15 @@ from portia.model import (
     OpenAIGenerativeModel,
     map_message_to_instructor,
 )
+
+# Conditionally import Amazon Bedrock model (requires AWS extras)
+try:
+    from portia.model import AmazonBedrockGenerativeModel
+    HAS_AMAZON = True
+except ImportError:
+    AmazonBedrockGenerativeModel = None  # type: ignore
+    HAS_AMAZON = False
+
 from portia.planning_agents.base_planning_agent import StepsOrError
 from tests.utils import get_mock_base_chat_model
 
@@ -245,6 +253,8 @@ def test_anthropic_model_structured_output_returns_dict() -> None:
         assert result.test_field == "Response from model"
 
 
+
+@pytest.mark.skip(not HAS_AMAZON, reason="Amazon Bedrock model requires AWS extras")
 def test_amazon_bedrock_model_structured_output_returns_dict() -> None:
     """Test that AmazonBedrockGenerativeModel.structured_output returns a dict."""
     mock_chat_bedrock = MagicMock(spec=BaseChatModel)

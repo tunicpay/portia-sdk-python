@@ -26,17 +26,31 @@ from portia.config import (
 from portia.config_loader import ConfigLoader, ensure_config_directory
 from portia.errors import ConfigNotFoundError, InvalidConfigError
 from portia.model import (
-    AmazonBedrockGenerativeModel,
     AnthropicGenerativeModel,
     AzureOpenAIGenerativeModel,
     GenerativeModel,
     GoogleGenAiGenerativeModel,
     LLMProvider,
-    MistralAIGenerativeModel,
     OpenAIGenerativeModel,
     OpenRouterGenerativeModel,
     _llm_cache,
 )
+
+# Conditionally import Mistral model (requires Mistral extras)
+try:
+    from portia.model import MistralAIGenerativeModel
+    HAS_MISTRAL = True
+except ImportError:
+    MistralAIGenerativeModel = None  # type: ignore
+    HAS_MISTRAL = False
+
+# Conditionally import Amazon Bedrock model (requires AWS extras)
+try:
+    from portia.model import AmazonBedrockGenerativeModel
+    HAS_AMAZON = True
+except ImportError:
+    AmazonBedrockGenerativeModel = None  # type: ignore
+    HAS_AMAZON = False
 
 PROVIDER_ENV_VARS = [
     "OPENAI_API_KEY",
@@ -162,25 +176,37 @@ def test_llm_redis_cache_url_kwarg(monkeypatch: pytest.MonkeyPatch) -> None:
     assert _llm_cache.get() is mock_redis_cache_instance
 
 
-@pytest.mark.parametrize(
-    ("model_string", "model_type", "present_env_vars"),
-    [
-        ("openai/o1-preview", OpenAIGenerativeModel, ["OPENAI_API_KEY"]),
-        ("anthropic/claude-3-5-haiku-latest", AnthropicGenerativeModel, ["ANTHROPIC_API_KEY"]),
-        ("mistralai/mistral-tiny-latest", MistralAIGenerativeModel, ["MISTRAL_API_KEY"]),
-        ("google/gemini-2.5-preview", GoogleGenAiGenerativeModel, ["GOOGLE_API_KEY"]),
+# Build test parameters list conditionally
+_test_model_params = [
+    ("openai/o1-preview", OpenAIGenerativeModel, ["OPENAI_API_KEY"]),
+    ("anthropic/claude-3-5-haiku-latest", AnthropicGenerativeModel, ["ANTHROPIC_API_KEY"]),
+    ("google/gemini-2.5-preview", GoogleGenAiGenerativeModel, ["GOOGLE_API_KEY"]),
+]
+if HAS_MISTRAL:
+    _test_model_params.append(
+        ("mistralai/mistral-tiny-latest", MistralAIGenerativeModel, ["MISTRAL_API_KEY"])
+    )
+if HAS_AMAZON:
+    _test_model_params.append(
         (
             "amazon/anthropic.claude-3-sonnet-v1:0",
             AmazonBedrockGenerativeModel,
             ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_DEFAULT_REGION"],
-        ),
-        (
-            "azure-openai/gpt-4",
-            AzureOpenAIGenerativeModel,
-            ["AZURE_OPENAI_API_KEY", "AZURE_OPENAI_ENDPOINT"],
-        ),
-        ("openrouter/moonshotai/kimi-k2", OpenRouterGenerativeModel, ["OPENROUTER_API_KEY"]),
-    ],
+        )
+    )
+_test_model_params.extend([
+    (
+        "azure-openai/gpt-4",
+        AzureOpenAIGenerativeModel,
+        ["AZURE_OPENAI_API_KEY", "AZURE_OPENAI_ENDPOINT"],
+    ),
+    ("openrouter/moonshotai/kimi-k2", OpenRouterGenerativeModel, ["OPENROUTER_API_KEY"]),
+])
+
+
+@pytest.mark.parametrize(
+    ("model_string", "model_type", "present_env_vars"),
+    _test_model_params,
 )
 def test_set_default_model_from_string(
     model_string: str,
