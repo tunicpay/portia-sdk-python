@@ -80,6 +80,8 @@ def combine_args_kwargs(*args: Any, **kwargs: Any) -> Any:  # noqa: ANN401
 
 
 EXTRAS_GROUPS_DEPENDENCIES = {
+    "instructor": ["instructor"],
+    "execution": ["langchain", "langgraph", "langgraph.checkpoint"],
     "mistral": ["mistralai", "langchain_mistralai"],
     "mistralai": ["mistralai", "langchain_mistralai"],  # in process of refactoring
     "groq": ["groq"],

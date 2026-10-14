@@ -15,6 +15,7 @@ from langgraph.graph import END, MessagesState
 from pydantic import ValidationError
 
 from portia.clarification import Clarification, InputClarification
+from portia.clarification import is_clarification as is_clarification  # noqa: PLC0414
 from portia.errors import (
     InvalidAgentOutputError,
     InvalidPlanRunStateError,
@@ -59,15 +60,6 @@ class AgentNode(str, Enum):
 
 
 MAX_RETRIES = 4
-
-
-def is_clarification(artifact: Any) -> bool:  # noqa: ANN401
-    """Check if the artifact is a clarification or list of clarifications."""
-    return isinstance(artifact, Clarification) or (
-        isinstance(artifact, list)
-        and len(artifact) > 0
-        and all(isinstance(item, Clarification) for item in artifact)
-    )
 
 
 def tool_call_or_end(
