@@ -12,6 +12,12 @@ This Tunic fork omits cost estimation and automatic model metadata lookup. Inter
 context checks use the local character-based token estimate and a 100,000-token
 default. Model adapters can override `get_context_window_size()` when needed.
 
+The base package supports custom `LangChainGenerativeModel` clients and tools without
+Instructor or LangGraph. Install `portia-sdk-python[instructor]` for the built-in
+Instructor-backed model adapters, and `portia-sdk-python[execution]` for `Portia`,
+`PlanBuilderV2`, and execution agents. Full workflows using built-in model adapters
+need `portia-sdk-python[execution,instructor]`; the `all` extra includes both.
+
 ## Key features
 
 **Iterate on agents’ reasoning and intervene in their execution**</br>
@@ -46,7 +52,7 @@ Ensure you have python 3.11 or higher installed using `python --version`. If you
 
 **Step 1:** Install the Portia Python SDK
 ```bash
-pip install portia-sdk-python 
+pip install "portia-sdk-python[execution,instructor]"
 ```
 > **Note:** All versions have been yanked from pip. Existing installations may continue to work, but no new versions will be published. The repository will become private at the end of November.
 

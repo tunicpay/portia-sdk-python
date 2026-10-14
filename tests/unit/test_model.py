@@ -265,7 +265,7 @@ def test_amazon_bedrock_model_structured_output_returns_dict() -> None:
     mock_instructor_client = MagicMock()
     with (
         mock.patch("portia.model.ChatBedrock") as mock_chat_bedrock_cls,
-        mock.patch("portia.model.instructor.from_provider") as mock_from_provider,
+        mock.patch("instructor.from_provider") as mock_from_provider,
     ):
         mock_chat_bedrock_cls.return_value = mock_chat_bedrock
         mock_from_provider.return_value = mock_instructor_client
@@ -394,7 +394,7 @@ def test_instructor_manual_cache(monkeypatch: pytest.MonkeyPatch) -> None:
 
     mock_instructor_client = MagicMock()
     monkeypatch.setattr(
-        "portia.model.instructor.from_openai",
+        "instructor.from_openai",
         MagicMock(return_value=mock_instructor_client),
     )
     mock_create = MagicMock(return_value=DummyModel())
@@ -672,7 +672,7 @@ async def test_instructor_async_manual_cache(monkeypatch: pytest.MonkeyPatch) ->
 
     mock_instructor_client = MagicMock()
     monkeypatch.setattr(
-        "portia.model.instructor.from_openai",
+        "instructor.from_openai",
         MagicMock(return_value=mock_instructor_client),
     )
 
@@ -1062,7 +1062,8 @@ async def test_grok_model_initialization() -> None:
         mock_chat_openai = MagicMock()
         mock_chat_openai_cls.return_value = mock_chat_openai
 
-        with mock.patch("portia.model.instructor") as mock_instructor:
+        with mock.patch("portia.model._load_instructor") as mock_load_instructor:
+            mock_instructor = mock_load_instructor.return_value
             mock_instructor.from_openai.return_value = MagicMock()
 
             model = GrokGenerativeModel(
@@ -1101,7 +1102,8 @@ async def test_grok_model_async_methods() -> None:
 
         mock_chat_openai_cls.return_value = mock_chat_openai
 
-        with mock.patch("portia.model.instructor") as mock_instructor:
+        with mock.patch("portia.model._load_instructor") as mock_load_instructor:
+            mock_instructor = mock_load_instructor.return_value
             mock_instructor.from_openai.return_value = MagicMock()
 
             model = GrokGenerativeModel(

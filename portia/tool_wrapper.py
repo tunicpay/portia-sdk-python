@@ -16,9 +16,9 @@ from typing import TYPE_CHECKING, Any
 
 from pydantic import ConfigDict
 
+from portia.clarification import is_clarification
 from portia.common import combine_args_kwargs
 from portia.errors import ToolNotFoundError
-from portia.execution_agents.execution_utils import is_clarification
 from portia.logger import logger
 from portia.open_source_tools.llm_tool import LLMTool
 from portia.storage import AdditionalStorage, Storage, ToolCallRecord, ToolCallStatus

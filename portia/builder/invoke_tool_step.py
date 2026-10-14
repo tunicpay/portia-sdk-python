@@ -17,9 +17,9 @@ from pydantic import BaseModel, Field
 
 from portia.clarification import (
     Clarification,
+    is_clarification,
 )
 from portia.errors import ToolNotFoundError
-from portia.execution_agents.execution_utils import is_clarification
 from portia.model import Message
 from portia.plan import Step
 from portia.tool import Tool  # noqa: TC001

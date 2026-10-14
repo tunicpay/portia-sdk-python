@@ -291,3 +291,12 @@ ClarificationType = (
 
 """A list of clarifications of any type."""
 ClarificationListType = list[ClarificationType]
+
+
+def is_clarification(artifact: Any) -> bool:  # noqa: ANN401
+    """Check if the artifact is a clarification or list of clarifications."""
+    return isinstance(artifact, Clarification) or (
+        isinstance(artifact, list)
+        and len(artifact) > 0
+        and all(isinstance(item, Clarification) for item in artifact)
+    )
