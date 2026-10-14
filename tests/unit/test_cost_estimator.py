@@ -575,7 +575,7 @@ def test_model_pricing_exception_handling(estimator: CostEstimator) -> None:
     """Test exception handling in model pricing lookup."""
     from unittest.mock import patch
 
-    with patch("litellm.get_model_cost_map") as mock_get_cost:
+    with patch("portia.cost_estimator.get_model_catalog") as mock_get_cost:
         mock_get_cost.side_effect = AttributeError("LiteLLM error")
         pricing = estimator._get_model_pricing("some-model")
 

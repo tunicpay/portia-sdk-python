@@ -12,7 +12,6 @@ from enum import Enum
 from typing import TYPE_CHECKING, Any, Literal, TypeVar
 
 import instructor
-import litellm
 from anthropic import Anthropic, AsyncAnthropic
 from google import genai
 from langchain_anthropic import ChatAnthropic
@@ -29,6 +28,7 @@ from redis import RedisError
 from portia.common import validate_extras_dependencies
 from portia.gemini_langsmith_wrapper import wrap_gemini
 from portia.logger import logger
+from portia.model_catalog import get_model_catalog
 from portia.token_check import estimate_tokens
 
 if TYPE_CHECKING:
@@ -199,7 +199,7 @@ class GenerativeModel(ABC):
         Falls back to 100k tokens if the model is not found.
         """
         try:
-            return litellm.model_cost[self.model_name]["max_input_tokens"]
+            return int(get_model_catalog()[self.model_name]["max_input_tokens"])
         except (KeyError, TypeError):
             return 100_000
 

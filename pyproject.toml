@@ -30,7 +30,7 @@ dependencies = [
     "jsonref>=1.1.0",
     "posthog~=6.0",
     "testcontainers[redis]>=4.10.0 ; python_version >= '3.9' and python_version < '4.0'",
-    "litellm>=1.74.9.post1",
+    "httpx>=0.28.1,<1",
     "openai>=1.0.0",
     "langchain-google-genai>=2.1.8 ; python_version >= '3.11' and python_version < '4.0'",
     "google-genai>=1.18.0",

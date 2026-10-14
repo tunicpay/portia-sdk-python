@@ -12,7 +12,6 @@ from __future__ import annotations
 import asyncio
 from typing import TYPE_CHECKING, Any, ClassVar
 
-import litellm
 from pydantic import BaseModel, Field
 
 from portia.builder.llm_step import LLMStep
@@ -22,6 +21,7 @@ from portia.builder.single_tool_agent_step import SingleToolAgentStep
 from portia.config import Config
 from portia.end_user import EndUser
 from portia.logger import logger
+from portia.model_catalog import get_model_catalog
 from portia.open_source_tools.llm_tool import LLMTool
 from portia.plan import Plan, PlanContext, Step
 from portia.plan_run import PlanRun, PlanRunState
@@ -31,10 +31,6 @@ from portia.tool import ToolRunContext
 if TYPE_CHECKING:
     from portia.builder.step_v2 import StepV2
 
-
-LITELLM_PRICING_URL = (
-    "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json"
-)
 
 DEFAULT_MODEL_PRICING = {"input": 5.00, "output": 15.00}
 
@@ -438,7 +434,7 @@ Please provide your estimate with a brief explanation of your reasoning.
     def _get_model_pricing(self, model_name: str) -> dict[str, float]:
         """Get pricing information for a model from LiteLLM or fallback to defaults."""
         try:
-            cost_map = litellm.get_model_cost_map(LITELLM_PRICING_URL)  # pyright: ignore[reportPrivateImportUsage]
+            cost_map = get_model_catalog()
 
             if model_name in cost_map:
                 model_data = cost_map[model_name]
