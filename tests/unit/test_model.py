@@ -1042,37 +1042,17 @@ async def test_ollama_model_async_methods_if_available() -> None:
         pytest.skip("Ollama package not available")
 
 
-@pytest.mark.parametrize(
-    ("model_name", "expected_result"),
-    [
-        (
-            "gpt-4o",
-            128000,
-        ),
-        (
-            "o1-preview",
-            128000,
-        ),
-        (
-            "claude-3-5-haiku-latest",
-            200000,
-        ),
-        (
-            "gemini-2.5-pro",
-            1048576,
-        ),
-        (
-            "unknown-model-xyz",
-            100000,  # Fallback value
-        ),
-    ],
-)
-def test_get_context_window_size(model_name: str, expected_result: int) -> None:
-    """Test get_context_window_size returns correct value."""
+@pytest.mark.parametrize("model_name", ["gpt-4o", "gemini-2.5-pro", "unknown-model-xyz"])
+def test_get_context_window_size_uses_local_default(
+    model_name: str,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Context checks work offline without looking up model metadata."""
+    fetch = MagicMock(side_effect=AssertionError("Unexpected model catalog request"))
+    monkeypatch.setattr("httpx.get", fetch)
     model = LangChainGenerativeModel(client=get_mock_base_chat_model(), model_name=model_name)
-    result = model.get_context_window_size()
-
-    assert result == expected_result
+    assert model.get_context_window_size() == 100_000
+    fetch.assert_not_called()
 
 
 @pytest.mark.asyncio

@@ -8,6 +8,10 @@
 
 # Portia SDK Python
 
+This Tunic fork omits cost estimation and automatic model metadata lookup. Internal
+context checks use the local character-based token estimate and a 100,000-token
+default. Model adapters can override `get_context_window_size()` when needed.
+
 ## Key features
 
 **Iterate on agents’ reasoning and intervene in their execution**</br>

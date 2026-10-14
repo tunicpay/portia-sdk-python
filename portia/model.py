@@ -28,7 +28,6 @@ from redis import RedisError
 from portia.common import validate_extras_dependencies
 from portia.gemini_langsmith_wrapper import wrap_gemini
 from portia.logger import logger
-from portia.model_catalog import get_model_catalog
 from portia.token_check import estimate_tokens
 
 if TYPE_CHECKING:
@@ -194,14 +193,11 @@ class GenerativeModel(ABC):
         raise NotImplementedError("async is not implemented")  # pragma: no cover
 
     def get_context_window_size(self) -> int:
-        """Get the context window size of the model.
+        """Return the local default used by internal context checks.
 
-        Falls back to 100k tokens if the model is not found.
+        Model adapters can override this when they need a specific limit.
         """
-        try:
-            return int(get_model_catalog()[self.model_name]["max_input_tokens"])
-        except (KeyError, TypeError):
-            return 100_000
+        return 100_000
 
     def __str__(self) -> str:
         """Get the string representation of the model."""
