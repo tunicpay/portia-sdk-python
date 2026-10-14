@@ -9,10 +9,9 @@ from abc import ABC, abstractmethod
 from contextlib import suppress
 from contextvars import ContextVar
 from enum import Enum
+from importlib import import_module
 from typing import TYPE_CHECKING, Any, Literal, TypeVar
 
-import instructor
-import litellm
 from anthropic import Anthropic, AsyncAnthropic
 from google import genai
 from langchain_anthropic import ChatAnthropic
@@ -32,11 +31,20 @@ from portia.logger import logger
 from portia.token_check import estimate_tokens
 
 if TYPE_CHECKING:
+    from types import ModuleType
+
+    import instructor
     from langchain_core.caches import BaseCache
     from langchain_core.language_models.chat_models import BaseChatModel
     from openai.types.chat import ChatCompletionMessageParam
 
 _llm_cache: ContextVar[BaseCache | None] = ContextVar("llm_cache", default=None)
+
+
+def _load_instructor() -> ModuleType:
+    """Load the optional adapter dependency only when a provider needs it."""
+    validate_extras_dependencies("instructor")
+    return import_module("instructor")
 
 
 class Message(BaseModel):
@@ -194,14 +202,11 @@ class GenerativeModel(ABC):
         raise NotImplementedError("async is not implemented")  # pragma: no cover
 
     def get_context_window_size(self) -> int:
-        """Get the context window size of the model.
+        """Return the local default used by internal context checks.
 
-        Falls back to 100k tokens if the model is not found.
+        Model adapters can override this when they need a specific limit.
         """
-        try:
-            return litellm.model_cost[self.model_name]["max_input_tokens"]
-        except (KeyError, TypeError):
-            return 100_000
+        return 100_000
 
     def __str__(self) -> str:
         """Get the string representation of the model."""
@@ -421,6 +426,7 @@ class OpenAIGenerativeModel(LangChainGenerativeModel):
             **kwargs: Additional keyword arguments to pass to ChatOpenAI
 
         """
+        instructor = _load_instructor()
         self._model_kwargs = kwargs.copy()
 
         if "disabled_params" not in kwargs:
@@ -569,6 +575,7 @@ class OpenRouterGenerativeModel(OpenAIGenerativeModel):
             **kwargs: Additional keyword arguments to pass to ChatOpenAI
 
         """
+        instructor = _load_instructor()
         self._model_kwargs = kwargs.copy()
         if "disabled_params" not in kwargs:
             # This is a workaround for o3 mini to avoid parallel tool calls.
@@ -634,6 +641,7 @@ class GroqGenerativeModel(OpenAIGenerativeModel):
             **kwargs: Additional keyword arguments to pass to ChatOpenAI
 
         """
+        instructor = _load_instructor()
         self._model_kwargs = kwargs.copy()
         if "disabled_params" not in kwargs:
             # This is a workaround for some models to avoid parallel tool calls.
@@ -702,6 +710,7 @@ class AzureOpenAIGenerativeModel(LangChainGenerativeModel):
             **kwargs: Additional keyword arguments to pass to AzureChatOpenAI
 
         """
+        instructor = _load_instructor()
         self._model_kwargs = kwargs.copy()
 
         if "disabled_params" not in kwargs:
@@ -838,6 +847,7 @@ class GrokGenerativeModel(OpenAIGenerativeModel):
             **kwargs: Additional keyword arguments to pass to ChatOpenAI
 
         """
+        instructor = _load_instructor()
         self._model_kwargs = kwargs.copy()
 
         if "disabled_params" not in kwargs:
@@ -896,6 +906,7 @@ class AnthropicGenerativeModel(LangChainGenerativeModel):
             **kwargs: Additional keyword arguments to pass to ChatAnthropic
 
         """
+        instructor = _load_instructor()
         if "model_kwargs" in kwargs:
             self._model_kwargs = kwargs["model_kwargs"].copy()
         else:
@@ -1122,6 +1133,7 @@ if validate_extras_dependencies("mistralai", raise_error=False):
                 **kwargs: Additional keyword arguments to pass to ChatMistralAI
 
             """
+            instructor = _load_instructor()
             client = ChatMistralAI(
                 model_name=model_name,
                 api_key=api_key,
@@ -1280,6 +1292,7 @@ if validate_extras_dependencies("amazon", raise_error=False):
                 **kwargs: Additional keyword arguments to pass to ChatBedrock
 
             """
+            instructor = _load_instructor()
             set_amazon_logging_level(logging.WARNING)
             client = ChatBedrock(
                 model=model_id,
@@ -1330,6 +1343,7 @@ class GoogleGenAiGenerativeModel(LangChainGenerativeModel):
             **kwargs: Additional keyword arguments to pass to ChatGoogleGenerativeAI
 
         """
+        instructor = _load_instructor()
         # Configure genai with the api key
         genai_client = genai.Client(api_key=api_key.get_secret_value())
 
@@ -1399,6 +1413,7 @@ if validate_extras_dependencies("ollama", raise_error=False):
                 BaseModelT: The structured response from the model.
 
             """
+            instructor = _load_instructor()
             client = instructor.from_openai(
                 OpenAI(
                     base_url=self.base_url,
@@ -1439,6 +1454,7 @@ if validate_extras_dependencies("ollama", raise_error=False):
                 BaseModelT: The structured response from the model.
 
             """
+            instructor = _load_instructor()
             client = instructor.from_openai(
                 AsyncOpenAI(
                     base_url=self.base_url,

@@ -2,15 +2,15 @@
 
 from __future__ import annotations
 
+from importlib import import_module
+from typing import TYPE_CHECKING, Any
+
 from portia.builder.conditional_step import ConditionalStep
 from portia.builder.invoke_tool_step import InvokeToolStep
 from portia.builder.llm_step import LLMStep
 from portia.builder.loop_step import LoopStep
-from portia.builder.plan_builder_v2 import PlanBuilderV2
 from portia.builder.plan_v2 import PlanV2
-from portia.builder.react_agent_step import ReActAgentStep
 from portia.builder.reference import Input, StepOutput
-from portia.builder.single_tool_agent_step import SingleToolAgentStep
 from portia.builder.step_v2 import StepV2
 from portia.builder.user_input import UserInputStep
 from portia.builder.user_verify import UserVerifyStep
@@ -29,6 +29,7 @@ from portia.clarification import (
     ValueConfirmationClarification,
 )
 from portia.clarification_handler import ClarificationHandler
+from portia.common import validate_extras_dependencies
 from portia.config import (
     SUPPORTED_ANTHROPIC_MODELS,
     SUPPORTED_MISTRALAI_MODELS,
@@ -42,9 +43,6 @@ from portia.config import (
     StorageClass,
     default_config,
 )
-
-# Cost estimation
-from portia.cost_estimator import CostEstimator, PlanCostEstimate, StepCostEstimate
 
 # Error classes
 from portia.errors import (
@@ -66,6 +64,9 @@ from portia.errors import (
     ToolRetryError,
 )
 from portia.execution_agents.output import LocalDataValue, Output
+
+# Core classes
+from portia.execution_hooks import ExecutionHooks
 
 # Logging
 from portia.logger import logger
@@ -96,9 +97,6 @@ from portia.open_source_tools.weather import WeatherTool
 from portia.plan import Plan, PlanBuilder, PlanContext, PlanInput, PlanUUID, Step, Variable
 from portia.plan_run import PlanRun, PlanRunState
 
-# Core classes
-from portia.portia import ExecutionHooks, Portia
-
 # Tool related classes
 from portia.tool import Tool, ToolRunContext
 from portia.tool_decorator import tool
@@ -124,7 +122,6 @@ __all__ = [
     "ConditionalStep",
     "Config",
     "ConfigNotFoundError",
-    "CostEstimator",
     "CrawlTool",
     "CustomClarification",
     "DefaultToolRegistry",
@@ -161,7 +158,6 @@ __all__ = [
     "PlanBuilder",
     "PlanBuilderV2",
     "PlanContext",
-    "PlanCostEstimate",
     "PlanError",
     "PlanInput",
     "PlanNotFoundError",
@@ -180,7 +176,6 @@ __all__ = [
     "SseMcpClientConfig",
     "StdioMcpClientConfig",
     "Step",
-    "StepCostEstimate",
     "StepOutput",
     "StepV2",
     "StorageClass",
@@ -204,3 +199,28 @@ __all__ = [
     "open_source_tool_registry",
     "tool",
 ]
+
+
+if TYPE_CHECKING:
+    from portia.builder.plan_builder_v2 import PlanBuilderV2  # noqa: TC004
+    from portia.builder.react_agent_step import ReActAgentStep  # noqa: TC004
+    from portia.builder.single_tool_agent_step import SingleToolAgentStep  # noqa: TC004
+    from portia.portia import Portia  # noqa: TC004
+
+
+_EXECUTION_EXPORTS = {
+    "PlanBuilderV2": "portia.builder.plan_builder_v2",
+    "ReActAgentStep": "portia.builder.react_agent_step",
+    "SingleToolAgentStep": "portia.builder.single_tool_agent_step",
+    "Portia": "portia.portia",
+}
+
+
+def __getattr__(name: str) -> Any:  # noqa: ANN401
+    """Load execution entry points only when they are requested."""
+    if name not in _EXECUTION_EXPORTS:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    validate_extras_dependencies("execution")
+    value = getattr(import_module(_EXECUTION_EXPORTS[name]), name)
+    globals()[name] = value
+    return value

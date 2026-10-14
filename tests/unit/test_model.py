@@ -265,7 +265,7 @@ def test_amazon_bedrock_model_structured_output_returns_dict() -> None:
     mock_instructor_client = MagicMock()
     with (
         mock.patch("portia.model.ChatBedrock") as mock_chat_bedrock_cls,
-        mock.patch("portia.model.instructor.from_provider") as mock_from_provider,
+        mock.patch("instructor.from_provider") as mock_from_provider,
     ):
         mock_chat_bedrock_cls.return_value = mock_chat_bedrock
         mock_from_provider.return_value = mock_instructor_client
@@ -394,7 +394,7 @@ def test_instructor_manual_cache(monkeypatch: pytest.MonkeyPatch) -> None:
 
     mock_instructor_client = MagicMock()
     monkeypatch.setattr(
-        "portia.model.instructor.from_openai",
+        "instructor.from_openai",
         MagicMock(return_value=mock_instructor_client),
     )
     mock_create = MagicMock(return_value=DummyModel())
@@ -672,7 +672,7 @@ async def test_instructor_async_manual_cache(monkeypatch: pytest.MonkeyPatch) ->
 
     mock_instructor_client = MagicMock()
     monkeypatch.setattr(
-        "portia.model.instructor.from_openai",
+        "instructor.from_openai",
         MagicMock(return_value=mock_instructor_client),
     )
 
@@ -1042,37 +1042,17 @@ async def test_ollama_model_async_methods_if_available() -> None:
         pytest.skip("Ollama package not available")
 
 
-@pytest.mark.parametrize(
-    ("model_name", "expected_result"),
-    [
-        (
-            "gpt-4o",
-            128000,
-        ),
-        (
-            "o1-preview",
-            128000,
-        ),
-        (
-            "claude-3-5-haiku-latest",
-            200000,
-        ),
-        (
-            "gemini-2.5-pro",
-            1048576,
-        ),
-        (
-            "unknown-model-xyz",
-            100000,  # Fallback value
-        ),
-    ],
-)
-def test_get_context_window_size(model_name: str, expected_result: int) -> None:
-    """Test get_context_window_size returns correct value."""
+@pytest.mark.parametrize("model_name", ["gpt-4o", "gemini-2.5-pro", "unknown-model-xyz"])
+def test_get_context_window_size_uses_local_default(
+    model_name: str,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Context checks work offline without looking up model metadata."""
+    fetch = MagicMock(side_effect=AssertionError("Unexpected model catalog request"))
+    monkeypatch.setattr("httpx.get", fetch)
     model = LangChainGenerativeModel(client=get_mock_base_chat_model(), model_name=model_name)
-    result = model.get_context_window_size()
-
-    assert result == expected_result
+    assert model.get_context_window_size() == 100_000
+    fetch.assert_not_called()
 
 
 @pytest.mark.asyncio
@@ -1082,7 +1062,8 @@ async def test_grok_model_initialization() -> None:
         mock_chat_openai = MagicMock()
         mock_chat_openai_cls.return_value = mock_chat_openai
 
-        with mock.patch("portia.model.instructor") as mock_instructor:
+        with mock.patch("portia.model._load_instructor") as mock_load_instructor:
+            mock_instructor = mock_load_instructor.return_value
             mock_instructor.from_openai.return_value = MagicMock()
 
             model = GrokGenerativeModel(
@@ -1121,7 +1102,8 @@ async def test_grok_model_async_methods() -> None:
 
         mock_chat_openai_cls.return_value = mock_chat_openai
 
-        with mock.patch("portia.model.instructor") as mock_instructor:
+        with mock.patch("portia.model._load_instructor") as mock_load_instructor:
+            mock_instructor = mock_load_instructor.return_value
             mock_instructor.from_openai.return_value = MagicMock()
 
             model = GrokGenerativeModel(
